@@ -1,0 +1,48 @@
+{
+  "name": "bob-backend",
+  "version": "1.0.0",
+  "description": "BOB Backend",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "test": "grunt test",
+    "start": "node ./bin/www"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HowestServerSideScripting/Team7-AndroidBackend.git"
+  },
+  "keywords": [
+    "bob",
+    "carshare"
+  ],
+  "author": "Ilias Ismanalijev, Nick Spriet",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/HowestServerSideScripting/Team7-AndroidBackend/issues"
+  },
+  "homepage": "https://github.com/HowestServerSideScripting/Team7-AndroidBackend#readme",
+  "dependencies": {
+    "async": "^1.4.2",
+    "body-parser": "^1.14.1",
+    "connect-mongo": "^0.8.2",
+    "cookie-parser": "^1.4.0",
+    "express": "^4.13.3",
+    "express-session": "^1.11.3",
+    "jade": "^1.11.0",
+    "lodash": "^3.10.1",
+    "moment": "^2.10.6",
+    "mongoose": "^4.1.12",
+    "morgan": "^1.6.1",
+    "passport": "^0.3.0"
+  },
+  "devDependencies": {
+    "autoprefixer": "^6.0.3",
+    "grunt": "^0.4.5",
+    "grunt-contrib-jshint": "^0.11.3",
+    "grunt-contrib-less": "^1.0.1",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-mocha-cli": "^1.14.0",
+    "grunt-postcss": "^0.6.0"
+  }
+}

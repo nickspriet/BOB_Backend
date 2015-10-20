@@ -1,0 +1,14 @@
+
+// Defaults
+var api = {
+  clientID: 'YOUR_API_ID',
+  clientSecret: 'YOUR_API_SECRET'
+};
+var database = {
+  url: 'mongodb://localhost/bob'
+};
+
+module.exports = {
+  api: api,
+  database: database
+};
