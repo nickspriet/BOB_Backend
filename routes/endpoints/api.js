@@ -15,11 +15,14 @@ exports.notFound = function(req, res) {
  * Returns the parameters and query for the request
  */
 exports.ping = function(req, res) {
-  var params = _.merge(req.query, req.params);
+  var params = _.merge(req.query, req.body, req.params);
 
+  console.log(params);
   res.send({
     statusCode: 200,
     message: 'OK',
     query: params
   });
 };
+
+exports.login = exports.ping;
