@@ -11,7 +11,7 @@ You'll need node.js and npm.
 
 ```bash
 git clone https://github.com/HowestServerSideScripting/Team7-AndroidBackend.git
-cd Team7-AndroidBackend@
+cd Team7-AndroidBackend
 npm install
 npm install -g grunt-cli
 
@@ -22,7 +22,7 @@ grunt
 grunt build
 
 # Do the configuration part
-
+cp config/index.js.sample config/index.js
 
 # Run server
 npm start
