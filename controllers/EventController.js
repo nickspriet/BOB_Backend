@@ -1,7 +1,7 @@
 /**
  * Created by Nick Spriet on 29/11/2015.
  */
-var facebookAPI = require('./FacebookAPI');
+var facebookAPI = require('./facebookAPI');
 var Event = require('../models/Event');
 var UserToken = require('../models/UserToken');
 var async = require('async');

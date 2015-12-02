@@ -1,4 +1,4 @@
-var facebookAPI = require('./FacebookAPI');
+var facebookAPI = require('./facebookAPI');
 var User = require('../models/User');
 var UserToken = require('../models/UserToken');
 var crypto = require('crypto');
