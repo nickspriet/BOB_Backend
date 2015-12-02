@@ -18,7 +18,6 @@ userTokenSchema.set('toJSON', {
   }
 });
 
+
 var UserToken = mongoose.model('UserToken', userTokenSchema);
-
-
 module.exports = UserToken;

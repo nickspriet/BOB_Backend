@@ -23,7 +23,7 @@ var userSchema = new Schema({
   }
 });
 
-userSchema.statics.createFromFacebook = function(profile) {
+userSchema.statics.createFromFacebook = function (profile) {
   return this({
     facebookID: profile.id,
     name: profile.name,
@@ -45,11 +45,11 @@ userSchema.statics.createFromFacebook = function(profile) {
 
 // Only send required fields
 userSchema.set('toJSON', {
-  transform: function(doc, ret) {
+  transform: function (doc, ret) {
     return _.pick(ret, '_id', 'facebookID', 'name', 'firstName', 'lastName', 'picture', 'cover', 'link');
   }
 });
 
-var User = mongoose.model('User', userSchema);
 
+var User = mongoose.model('User', userSchema);
 module.exports = User;

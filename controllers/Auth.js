@@ -1,4 +1,4 @@
-var facebookAPI = require('./facebookAPI');
+var FacebookAPI = require('./FacebookAPI');
 var User = require('../models/User');
 var UserToken = require('../models/UserToken');
 var crypto = require('crypto');
@@ -9,7 +9,7 @@ var crypto = require('crypto');
   * @param {Function} cb Callback(Error err, User user)
   */
 function createUser(facebookToken, cb) {
-  facebookAPI(facebookToken).getProfile()
+  FacebookAPI(facebookToken).getProfile()
     .then(function(profile) {
       if (profile.error) return cb(profile.error);
       var user = User.createFromFacebook(profile);
