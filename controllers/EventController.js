@@ -25,7 +25,14 @@ function getEvents(token, cb) {
     if (err) return cb(err);
     if (!userToken) return cb(new Error('Invalid token'));
 
-    _getEvents(userToken.facebookToken, cb);
+    _getEvents(userToken.facebookToken, function(err, events, paging) {
+      if (err) return cb(err);
+      events.forEach(function(e) {
+        e.cover = e.cover.source;
+        e.picture = e.picture.data.url;
+      });
+      cb(null, events, paging);
+    });
   });
 }
 
