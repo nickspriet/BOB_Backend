@@ -37,12 +37,12 @@ FacebookAPI.prototype.getProfile = function () {
 FacebookAPI.prototype.getEvents = function () {
   return request({
     baseUrl: fbBaseUrl,
-    uri: '/me',
+    uri: '/me/events',
     method: 'GET',
     headers: fbHeaders,
     qs: {
       'access_token': this.accessToken,
-      'fields': 'id,name,events'
+      'fields': 'id,name,cover,attending_count,declined_count,description,can_guests_invite,interested_count,end_time,owner,noreply_count,place,start_time,rsvp_status,timezone,type,updated_time,guest_list_enabled,attending{name,id,picture,rsvp_status},picture'
     },
     json: true,
     useQuerystring: true

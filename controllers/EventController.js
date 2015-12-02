@@ -6,22 +6,26 @@ var Event = require('../models/Event');
 var UserToken = require('../models/UserToken');
 var async = require('async');
 
+
+function _getEvents(facebookToken, cb) {
+  facebookAPI(facebookToken).getEvents()
+    .then(function (result) {
+      if (result.error) return cb(result.error);
+      var events = result.data;
+      cb(null, events, result.paging);
+    })
+    .catch(cb);
+}
+
 /**
  * Returns the user's events
  */
 function getEvents(token, cb) {
   UserToken.findOne({'token': token}, function (err, userToken) {
     if (err) return cb(err);
-
     if (!userToken) return cb(new Error('Invalid token'));
-    else {
-      Event.find(function (err, events) {
-        if (err) return cb(err);
-        if (!events) return cb(new Error('Invalid events'));
-        console.log('Get events in controller', events);
-        cb(null, events);
-      });
-    }
+
+    _getEvents(userToken.facebookToken, cb);
   });
 }
 

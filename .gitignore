@@ -3,3 +3,5 @@ config/index.js
 *.log
 
 public/css/style.css
+.idea
+*.iml
