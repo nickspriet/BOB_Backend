@@ -1,10 +1,10 @@
 /**
  * Created by Nick Spriet on 29/11/2015.
  */
-var FacebookAPI = require('./FacebookAPI');
+var facebookAPI = require('./FacebookAPI');
 var Event = require('../models/Event');
 var UserToken = require('../models/UserToken');
-var async = require("async");
+var async = require('async');
 
 /**
  * Returns the user's events
@@ -25,6 +25,12 @@ function getEvents(token, cb) {
   });
 }
 
+function saveEvent(event, cb) {
+  console.log('save event in ctrl', event.name);
+  var createdEvent = Event.createFromFacebook(event);
+  if (createdEvent) createdEvent.save(cb);
+  else cb(createdEvent.error);
+}
 
 function saveEvents(token, cb) {
   UserToken.findOne({'token': token}, function (err, userToken) {
@@ -32,7 +38,7 @@ function saveEvents(token, cb) {
 
     if (!userToken) return cb(new Error('Invalid token'));
     else {
-      FacebookAPI(userToken.facebookToken).getEvents()
+      facebookAPI(userToken.facebookToken).getEvents()
         .then(function (result) {
           if (result.error) return cb(result.error);
 
@@ -45,12 +51,6 @@ function saveEvents(token, cb) {
   });
 }
 
-var saveEvent = function (event, cb) {
-  console.log("save event in ctrl", event.name);
-  var createdEvent = Event.createFromFacebook(event);
-  if (createdEvent) createdEvent.save(cb);
-  else cb(createdEvent.error);
-};
 
 module.exports.getEvents = getEvents;
 module.exports.saveEvents = saveEvents;

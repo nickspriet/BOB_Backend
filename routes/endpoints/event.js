@@ -2,7 +2,6 @@
  * Created by Nick Spriet on 02/12/2015.
  */
 var EventController = require('../../controllers/EventController');
-var _ = require("lodash");
 
 var errResponse = function (res) {
   return function (err) {
@@ -54,5 +53,5 @@ exports.save = function (req, res) {
         events: events
       }
     });
-  })
+  });
 };
