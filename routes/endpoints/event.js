@@ -2,7 +2,6 @@
  * Created by Nick Spriet on 02/12/2015.
  */
 var EventController = require('../../controllers/EventController');
-var _ = require("lodash");
 
 var errResponse = function (res) {
   return function (err) {
@@ -20,16 +19,18 @@ var errResponse = function (res) {
 /**
  * Event - Get the events for the authenticated user
  *
- * @param {String} BACKEND_TOKEN AccessToken
+ * @param {String} token AccessToken
  */
 exports.getEvents = function (req, res) {
-  EventController.getEvents(req.query.token, function (err, events) {
+  EventController.getEvents(req.query.token, function (err, events, paging) {
     if (err) return errResponse(res)(err);
+
     res.send({
       statusCode: 200,
       message: 'OK',
       data: {
-        events: events
+        events: events,
+        paging: paging
       }
     });
   });
@@ -54,5 +55,5 @@ exports.save = function (req, res) {
         events: events
       }
     });
-  })
+  });
 };
