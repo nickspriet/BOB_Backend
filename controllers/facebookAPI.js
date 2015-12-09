@@ -49,6 +49,22 @@ FacebookAPI.prototype.getEvents = function () {
   });
 };
 
+
+FacebookAPI.prototype.getEvent = function (eventId) {
+  return request({
+    baseUrl: fbBaseUrl,
+    uri: '/' + eventId,
+    method: 'GET',
+    headers: fbHeaders,
+    qs: {
+      'access_token': this.accessToken,
+      'fields': 'id,name,cover,attending_count,declined_count,description,can_guests_invite,interested_count,end_time,owner,noreply_count,place,start_time,timezone,type,updated_time,guest_list_enabled,attending{name,id,picture,rsvp_status},picture'
+    },
+    json: true,
+    useQuerystring: true
+  });
+};
+
 module.exports = function (accessToken) {
   return new FacebookAPI(accessToken);
 };
