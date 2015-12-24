@@ -18,6 +18,7 @@ router.post('/event/save', event.save);
 router.get('/event', event.getEvents);
 
 router.get('/ride', ride.getRides);
+router.get('/ride/:id', ride.getRide);
 router.post('/ride', ride.create);
 
 router.get('/api/*', api.notFound);

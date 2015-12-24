@@ -83,9 +83,44 @@ function getRides(token, cb) {
 				}, cb);
 			});
 	});
+}
 
+/**
+ * Get the rides for the authenticated user
+ * @param {String} id ID of the ride
+ * @param {String} token AccessToken
+ */
+function getRide(id, token, cb) {
+	UserToken.findOne({'token': token}, function(err, userToken) {
+		if (err) return cb(err);
+		if (!userToken) return cb(new Error('No user with this token'));
+
+		var userId = userToken.userId;
+		var fb = facebookAPI(userToken.facebookToken);
+
+		Ride.findOne({
+        _id: id,
+				driver: userId
+			})
+			.populate('driver')
+			.exec(function(err, ride) {
+				fb.getEvent(ride.event)
+			    .then(function (event) {
+			      if (event.error) return cb(event.error);
+
+						event.cover = event.cover.source;
+		        event.picture = event.picture.data.url;
+
+						ride.event = event;
+
+			      cb(null, ride);
+			    })
+			    .catch(cb);
+			});
+	});
 }
 
 
 module.exports.createFromEvent = createFromEvent;
 module.exports.getRides = getRides;
+module.exports.getRide = getRide;

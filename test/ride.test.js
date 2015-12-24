@@ -14,6 +14,7 @@ request(app)
   });
 */
 
+/*
 request(app)
   .get('/ride')
 	.query({
@@ -22,4 +23,16 @@ request(app)
   .end(function(err, res) {
     if (err) throw err;
 		console.log(res.body.data.rides);
+  });
+  */
+
+
+request(app)
+  .get('/ride/56686aeff07b3c7b78d4fc7b')
+	.query({
+		token: '564c364f3b96585f1d3f781f|eyvtkLaTu8Ay-ZCYuA7kEFb'
+	})
+  .end(function(err, res) {
+    if (err) throw err;
+		console.log(res.body);
   });

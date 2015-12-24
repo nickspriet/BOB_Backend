@@ -32,6 +32,25 @@ exports.getRides = function (req, res) {
 };
 
 
+/**
+ * Get the rides for the authenticated user
+ * @param {String} id ID of the ride
+ * @param {String} token AccessToken
+ */
+exports.getRide = function (req, res) {
+  RideController.getRide(req.params.id, req.query.token, function (err, ride) {
+    if (err) return errResponse(res)(err);
+    res.send({
+      statusCode: 200,
+      message: 'OK',
+      data: {
+        ride: ride
+      }
+    });
+  });
+};
+
+
 
 
 /**
