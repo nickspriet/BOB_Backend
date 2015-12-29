@@ -1,5 +1,5 @@
-var User = require('../models/User');
-var UserToken = require('../models/UserToken');
+var User = require('../data/models/User');
+var UserToken = require('../data/models/UserToken');
 
 /**
  * Returns the user's profile

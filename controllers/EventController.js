@@ -1,14 +1,14 @@
 /**
  * Created by Nick Spriet on 29/11/2015.
  */
-var facebookAPI = require('./facebookAPI');
-var Event = require('../models/Event');
-var UserToken = require('../models/UserToken');
+var FacebookAPI = require('./FacebookAPI');
+var Event = require('../data/models/Event');
+var UserToken = require('../data/models/UserToken');
 var async = require('async');
 
 
 function _getEvents(facebookToken, cb) {
-  facebookAPI(facebookToken).getEvents()
+  FacebookAPI(facebookToken).getEvents()
     .then(function (result) {
       if (result.error) return cb(result.error);
       var events = result.data;
@@ -21,7 +21,7 @@ function _getEvents(facebookToken, cb) {
  * Returns the user's events
  */
 function getEvents(token, cb) {
-  UserToken.findOne({'token': token}, function (err, userToken) {
+    UserToken.findOne({'token': token}, function (err, userToken) {
     if (err) return cb(err);
     if (!userToken) return cb(new Error('Invalid token'));
 
@@ -49,7 +49,7 @@ function saveEvents(token, cb) {
 
     if (!userToken) return cb(new Error('Invalid token'));
     else {
-      facebookAPI(userToken.facebookToken).getEvents()
+      FacebookAPI(userToken.facebookToken).getEvents()
         .then(function (result) {
           if (result.error) return cb(result.error);
 

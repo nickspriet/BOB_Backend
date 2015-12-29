@@ -1,10 +1,10 @@
-var facebookAPI = require('./facebookAPI');
-var Ride = require('../models/Ride');
-var UserToken = require('../models/UserToken');
+var FacebookAPI = require('./FacebookAPI');
+var Ride = require('../data/models/Ride');
+var UserToken = require('../data/models/UserToken');
 var async = require('async');
 
 function _getEvent(facebookToken, eventId, cb) {
-  facebookAPI(facebookToken).getEvent(eventId)
+  FacebookAPI(facebookToken).getEvent(eventId)
     .then(function (result) {
       if (result.error) return cb(result.error);
       cb(null, result);
@@ -60,7 +60,7 @@ function getRides(token, cb) {
 		if (!userToken) return cb(new Error('No user with this token'));
 
 		var userId = userToken.userId;
-		var fb = facebookAPI(userToken.facebookToken);
+		var fb = FacebookAPI(userToken.facebookToken);
 
 		Ride.find({
 				driver: userId
@@ -96,7 +96,7 @@ function getRide(id, token, cb) {
 		if (!userToken) return cb(new Error('No user with this token'));
 
 		var userId = userToken.userId;
-		var fb = facebookAPI(userToken.facebookToken);
+		var fb = FacebookAPI(userToken.facebookToken);
 
 		Ride.findOne({
         _id: id,
