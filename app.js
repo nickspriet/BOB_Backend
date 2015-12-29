@@ -3,13 +3,8 @@ var logger = require('morgan');
 var bodyParser = require('body-parser');
 
 var routes = require('./routes');
-var mongoose = require('mongoose');
-var config = require('./config');
 
 var app = express();
-
-// database setup
-mongoose.connect(config.database.url);
 
 // Logging
 app.use(logger('dev'));
@@ -19,6 +14,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // Routing
+//TODO: make error.js file to handle errors
 app.use('/', routes);
 
 module.exports = app;
