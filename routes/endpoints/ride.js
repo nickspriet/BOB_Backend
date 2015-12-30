@@ -1,17 +1,5 @@
-
 var RideController = require('../../controllers/RideController');
-
-var errResponse = function (res) {
-  return function (err) {
-    console.error(err);
-    res.status(500);
-    return res.send({
-      statusCode: 500,
-      message: 'Failed to get rides',
-      error: err
-    });
-  };
-};
+var errResponse = require('./error');
 
 
 /**
@@ -19,16 +7,16 @@ var errResponse = function (res) {
  * @param {String} token AccessToken
  */
 exports.getRides = function (req, res) {
-  RideController.getRides(req.query.token, function (err, rides) {
-    if (err) return errResponse(res)(err);
-    res.send({
-      statusCode: 200,
-      message: 'OK',
-      data: {
-        rides: rides
-      }
+    RideController.getRides(req.query.token, function (err, rides) {
+        if (err) return errResponse(res)(err, 'Failed to get rides');
+        res.send({
+            statusCode: 200,
+            message: 'OK',
+            data: {
+                rides: rides
+            }
+        });
     });
-  });
 };
 
 
@@ -38,19 +26,17 @@ exports.getRides = function (req, res) {
  * @param {String} token AccessToken
  */
 exports.getRide = function (req, res) {
-  RideController.getRide(req.params.id, req.query.token, function (err, ride) {
-    if (err) return errResponse(res)(err);
-    res.send({
-      statusCode: 200,
-      message: 'OK',
-      data: {
-        ride: ride
-      }
+    RideController.getRide(req.params.id, req.query.token, function (err, ride) {
+        if (err) return errResponse(res)(err, 'Failed to get ride');
+        res.send({
+            statusCode: 200,
+            message: 'OK',
+            data: {
+                ride: ride
+            }
+        });
     });
-  });
 };
-
-
 
 
 /**
@@ -59,15 +45,15 @@ exports.getRide = function (req, res) {
  * @param {String} token Our token
  */
 exports.create = function (req, res) {
-	RideController.createFromEvent(req.body.token, req.body.eventId, function(err, ride) {
-		if (err) return errResponse(res)(err);
+    RideController.createFromEvent(req.body.token, req.body.eventId, function (err, ride) {
+        if (err) return errResponse(res)(err, 'Failed to create ride from event');
 
-		return res.send({
-			statusCode: 200,
-      message: 'OK',
-			data: {
-				ride: ride
-			}
-		});
-	});
+        return res.send({
+            statusCode: 200,
+            message: 'OK',
+            data: {
+                ride: ride
+            }
+        });
+    });
 };
