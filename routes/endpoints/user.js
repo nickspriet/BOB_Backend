@@ -1,9 +1,8 @@
 var _ = require('lodash');
 var Auth = require('../../controllers/Auth');
 var errResponse = require('./error');
-var UserController = require('../../controllers/UserController');
 var UsersRepo = require('../../data/repositories/UsersRepo');
-
+var UserTokensRepo = require('../../data/repositories/UserTokensRepo');
 
 
 function getParams(req) {
@@ -56,23 +55,22 @@ var user = (function () {
      * @param {String} BACKEND_TOKEN AccessToken
      */
     var profile = function (req, res) {
-        UserController.getProfile(req.query.token, function (err, profile) {
-            if (err) return errResponse(res)(err, 'Failed to get profile');
-            res.send({
-                statusCode: 200,
-                message: 'OK',
-                data: {
-                    user: profile
-                }
-            });
-        });
-    };
+        UserTokensRepo.getByFacebookToken(req.query.token, function (err, userToken) {
+            if (err) return errResponse(res)(err, err.message);
 
-    //var profile2 = function(req, res){
-    //    UsersRepo.getByToken(req.query.token, function(err, user){
-    //        if (err) return
-    //    });
-    //};
+            UsersRepo.getById(userToken.userId, function (err, user) {
+                if (err) return errResponse(res)(err, 'Failed to get profile');
+
+                res.send({
+                    statusCode: 200,
+                    message: 'OK',
+                    data: {
+                        user: user
+                    }
+                });
+            });
+        })
+    };
 
     return {
         login: login,
