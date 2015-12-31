@@ -13,7 +13,7 @@ router.get('/', index.home);
 
 router.get('/api/*', api.notFound);
 router.get('/api/ping', api.ping);
-router.post('/api/ping', api.ping);
+//router.post('/api/ping', api.ping);
 
 router.post('/user/login', user.login);
 router.get('/user/profile', user.profile);
