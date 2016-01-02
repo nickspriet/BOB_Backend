@@ -5,7 +5,7 @@ var mongoose = require('mongoose');
 var _ = require('lodash');
 
 var UserTokenSchema = new mongoose.Schema({
-    userId: {type: mongoose.Schema.ObjectId, index: true},
+    userId: {type: mongoose.Schema.Types.ObjectId, index: true},
     token: {type: String, index: true},
     facebookToken: String,
     facebookExpirationDate: Date,

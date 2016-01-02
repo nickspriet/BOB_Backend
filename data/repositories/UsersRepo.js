@@ -5,8 +5,8 @@
 var UsersRepo = (function () {
     var User = require('../models/User');
 
-    var getByFacebookId = function (facebookId, next) {
-        User.findOne({'facebookID': facebookId}, function (err, profile) {
+    var getByFacebookUserId = function (facebookUserId, next) {
+        User.findOne({'facebookID': facebookUserId}, function (err, profile) {
             if (err) return next(err);
 
             return next(null, profile);
@@ -26,7 +26,7 @@ var UsersRepo = (function () {
 
     return {
         model: User,
-        getByFacebookId: getByFacebookId,
+        getByFacebookUserId: getByFacebookUserId,
         getById: getById
     }
 })();

@@ -1,45 +1,42 @@
 /**
  * Created by Nick Spriet on 02/12/2015.
  */
-var EventController = require('../../controllers/EventController');
-var errResponse = require('./error');
+var facebookApi = require('../../routes/api/facebookApi');
+var showError = require('../error');
+var async = require('async');
 
-/**
- * Event - Get the events for the authenticated user
- *
- * @param {String} BACKEND_TOKEN AccessToken
- */
-exports.getEvents = function (req, res) {
-    EventController.getEvents(req.query.token, function (err, events, paging) {
-        if (err) return errResponse(res)(err, 'Failed to get events');
+var event = (function () {
+    /**
+     * Event - Get the events for the authenticated user
+     *
+     * @param {String} BACKEND_TOKEN AccessToken
+     */
+    var getEvents = function (req, res) {
 
-        res.send({
-            statusCode: 200,
-            message: 'OK',
-            data: {
-                events: events,
-                paging: paging
-            }
+        facebookApi(req.userToken.facebookToken).getEvents(function (err, result) {
+            if (err) return showError.response(res)(err, err.message);
+
+            var events = result.reverse();
+            events.forEach(function(e) {
+                //TODO => delete this and handle error in android
+                e.description =  e.description ? e.description : '';
+                e.cover = e.cover ? e.cover.source : '';
+                e.picture = e.picture.data.url ? e.picture.data.url : '';
+            });
+
+            res.send({
+                statusCode: 200,
+                message: 'OK',
+                data: {
+                    events: events
+                }
+            });
         });
-    });
-};
+    };
 
+    return {
+        getEvents: getEvents
+    };
+})();
 
-/**
- * Event - Save the events for the authenticated user
- *
- * @param {String} BACKEND_TOKEN AccessToken
- */
-//exports.save = function (req, res) {
-//    EventController.saveEvents(req.body.token, function (err, events) {
-//        if (err) return errResponse(res)(err);
-//
-//        return res.send({
-//            statusCode: 200,
-//            message: 'OK',
-//            data: {
-//                events: events
-//            }
-//        });
-//    });
-//};
+module.exports = event;

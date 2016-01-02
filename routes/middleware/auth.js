@@ -29,8 +29,7 @@ var Auth = (function () {
     var findOrCreateUser = function (req, res, next) {
         var params = req.params = getParams(req);
 
-        //TODO: profile is always NULL !!!
-        UsersRepo.getByFacebookId(params.FACEBOOK_USERID, function (err, profile) {
+        UsersRepo.getByFacebookUserId(params.FACEBOOK_USERID, function (err, profile) {
             if (err) return showError.response(res)(err, err.message);
 
             if (profile) {
@@ -48,9 +47,7 @@ var Auth = (function () {
                     console.info('New profile', profile.name);
 
                     var user = req.user = User.createFromFacebook(profile);
-                    user.save(function(err){
-                         return next();
-                    });
+                    user.save(next);
                 });
             }
         });

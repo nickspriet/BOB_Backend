@@ -29,7 +29,7 @@ var UserTokensRepo = (function () {
             if (err) return next(err);
             if (!userToken) return next(new Error('Invalid token: no user found for this token'));
 
-            console.log('userToken', userToken);
+            //console.log('userToken', userToken);
             next(null, userToken);
         });
     };

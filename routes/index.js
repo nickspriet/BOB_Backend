@@ -14,7 +14,7 @@ var webhook = require('./endpoints/webhook');
 
 
 //middleware
-var loadUserToken = require('./middleware/loadUserToken');
+var userTokenMW = require('./middleware/userTokenMW');
 var auth = require('./middleware/auth');
 
 
@@ -22,14 +22,13 @@ var auth = require('./middleware/auth');
 router.get('/', index.home);
 
 router.post('/api/user/login', auth.findOrCreateUser, auth.createToken, user.login);
-router.get('/api/user/profile', loadUserToken, user.profile);
+router.get('/api/user/profile', userTokenMW.loadUserToken, user.profile);
 
-router.get('/event', event.getEvents);
-//router.post('/event/save', event.save);
+router.get('/api/event', userTokenMW.loadUserToken, event.getEvents);
 
-router.get('/ride', ride.getRides);
-router.get('/ride/:id', ride.getRide);
-router.post('/ride', ride.create);
+router.post('/api/ride', userTokenMW.loadUserToken, ride.create);
+router.get('/api/ride', userTokenMW.loadUserToken, ride.getRides);
+//router.get('/api/ride/:id', ride.getRide);
 
 router.get('/webhook', webhook.testje);
 router.post('/webhook', webhook.addEvent);
