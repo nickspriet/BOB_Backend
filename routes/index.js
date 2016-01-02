@@ -1,22 +1,28 @@
+/**
+ * routes/endpoints/index.js
+ */
 var express = require('express');
 var router = express.Router();
+var showError = require('./error');
 
+//endpoints
 var index = require('./endpoints/index');
-var api = require('./endpoints/api');
 var user = require('./endpoints/user');
 var event = require('./endpoints/event');
-var webhook = require('./endpoints/webhook');
 var ride = require('./endpoints/ride');
+var webhook = require('./endpoints/webhook');
 
 
+//middleware
+var loadUserToken = require('./middleware/loadUserToken');
+var auth = require('./middleware/auth');
+
+
+//routes
 router.get('/', index.home);
 
-router.get('/api/*', api.notFound);
-router.get('/api/ping', api.ping);
-//router.post('/api/ping', api.ping);
-
-router.post('/user/login', user.login);
-router.get('/user/profile', user.profile);
+router.post('/api/user/login', auth.findOrCreateUser, auth.createToken, user.login);
+router.get('/api/user/profile', loadUserToken, user.profile);
 
 router.get('/event', event.getEvents);
 //router.post('/event/save', event.save);
@@ -28,5 +34,7 @@ router.post('/ride', ride.create);
 router.get('/webhook', webhook.testje);
 router.post('/webhook', webhook.addEvent);
 
+
+router.get('/api/*', showError.notFound);
 
 module.exports = router;
