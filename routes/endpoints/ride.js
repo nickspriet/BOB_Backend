@@ -51,6 +51,25 @@ var ride = (function () {
         });
     };
 
+    var getRidesForEvent = function (req, res) {
+        RidesRepo.getAllByEvent(req.params.id, function (err, rides) {
+            if (err) return showError.response(res)(err, err.message);
+
+            var fbAPI = facebookApi(req.userToken.facebookToken);
+            async.map(rides, RidesRepo.populateWithEvent(fbAPI), function(err, rides) {
+                if (err) return showError.response(res)(err, err.message);
+                if (!rides) return showError.response(res)(err, 'No rides found for this event');
+                res.send({
+                  statusCode: 200,
+                  message: 'OK',
+                  data: {
+                    rides: rides
+                  }
+                });
+            });
+        });
+    };
+
 
     /**
      * Get the rides for the authenticated user
@@ -80,7 +99,8 @@ var ride = (function () {
     return {
         create: create,
         getRide: getRide,
-        getRides: getRides
+        getRides: getRides,
+        getRidesForEvent: getRidesForEvent
     };
 })();
 

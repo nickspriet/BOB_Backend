@@ -38,6 +38,17 @@ var RidesRepo = (function () {
             });
     };
 
+    var getAllByEvent = function (eventId, next) {
+        Ride.find({event: eventId})
+            .populate('driver')
+            .exec(function (err, rides) {
+                if (err) return next(err);
+                if (!rides) return next(new Error('No rides found for this event'));
+
+                next(null, rides);
+            });
+    };
+
     var getById = function (id, next) {
         Ride.findOne({_id: id})
             .populate('driver')
@@ -50,23 +61,31 @@ var RidesRepo = (function () {
             });
     };
 
+    var eventsCache = {};
     var populateWithEvent = function (fbAPI) {
-      return function (ride, cb) {
-        fbAPI.getByFacebookEventId(ride._doc.event, function (err, event) {
-          if (err) return cb(err);
-          if (event.error) return cb(event.error);
+        return function (ride, cb) {
+            var eventId = ride._doc.event;
+            if (eventsCache[eventId]) {
+                ride._doc.event = eventsCache[eventId];
+                cb(null, ride);
+                return;
+            }
+            fbAPI.getByFacebookEventId(eventId, function (err, event) {
+                if (err) return cb(err);
+                if (event.error) return cb(event.error);
 
-          //TODO => delete this and handle error in android
-          event.description = event.description ? event.description : '';
-          event.cover = event.cover ? event.cover.source : '';
-          event.picture = event.picture.data.url ? event.picture.data.url : '';
+                //TODO => delete this and handle error in android
+                event.description = event.description ? event.description : '';
+                event.cover = event.cover ? event.cover.source : '';
+                event.picture = event.picture.data.url ? event.picture.data.url : '';
 
-          //add event to model
-          ride._doc.event = event;
+                //add event to model
+                ride._doc.event = event;
+                eventsCache[eventId] = event;
 
-          cb(null, ride);
-        });
-      };
+                cb(null, ride);
+            });
+        };
     };
 
     return {
@@ -74,7 +93,8 @@ var RidesRepo = (function () {
         createFromEvent: createFromEvent,
         getAllByDriver: getAllByDriver,
         getById: getById,
-        populateWithEvent: populateWithEvent
+        populateWithEvent: populateWithEvent,
+        getAllByEvent: getAllByEvent
     };
 })();
 
