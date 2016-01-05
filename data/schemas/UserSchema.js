@@ -56,7 +56,7 @@ UserSchema.statics.createFromFacebook = function (profile) {
 UserSchema.set('toJSON', {
     transform: function (doc, ret) {
         return _.pick(ret, '_id', 'facebookID', 'name', 'firstName', 'lastName',
-        'picture', 'cover', 'link', 'mobile', 'carModel', 'carNo');
+        'picture', 'cover', 'link', 'mobile', 'carModel', 'carNo', 'aboutMe');
     }
 });
 
