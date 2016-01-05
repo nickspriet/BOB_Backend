@@ -33,7 +33,7 @@ var ride = (function () {
      * @param {String} token AccessToken
      */
     var getRides = function (req, res) {
-        RidesRepo.getAllByDriver(req.userToken.userId, function (err, rides) {
+        RidesRepo.getAllForUser(req.userToken.userId, function (err, rides) {
             if (err) return showError.response(res)(err, err.message);
 
             var fbAPI = facebookApi(req.userToken.facebookToken);
@@ -96,11 +96,37 @@ var ride = (function () {
         });
     };
 
+    /**
+     * Add a request to a ride for the current user
+     * @param {String} rideid ID of the ride
+     * @param {String} token AccessToken
+     */
+    var requestRide = function (req, res) {
+        RidesRepo.addRequest(req.body.rideid, req.userToken.userId, function (err, ride) {
+            if (err) return showError.response(res)(err, 'Failed to add request');
+
+            var fbAPI = facebookApi(req.userToken.facebookToken);
+            RidesRepo.populateWithEvent(fbAPI)(ride, function(err, ride) {
+                if (err) return showError.response(res)(err, err.message);
+                if (!ride) return showError.response(res)(err, 'No event found for this ride');
+
+                res.send({
+                  statusCode: 200,
+                  message: 'OK',
+                  data: {
+                    ride: ride
+                  }
+                });
+            });
+        });
+    };
+
     return {
         create: create,
         getRide: getRide,
         getRides: getRides,
-        getRidesForEvent: getRidesForEvent
+        getRidesForEvent: getRidesForEvent,
+        requestRide: requestRide
     };
 })();
 

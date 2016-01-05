@@ -1,7 +1,6 @@
 /**
  * Created by Nick on 12/30/15.
  */
- var _ = require('lodash');
 
 var UsersRepo = (function () {
     var User = require('../models/User');
@@ -26,8 +25,9 @@ var UsersRepo = (function () {
 
     var saveUser = function (userId, newUser, next) {
         User.findByIdAndUpdate(
-            {'_id': userId},
+            userId,
             {$set: newUser},
+            {'new': true},
             next);
     };
 

@@ -29,6 +29,7 @@ router.get('/api/event', userTokenMW.loadUserToken, event.getEvents);
 
 router.post('/api/ride', userTokenMW.loadUserToken, ride.create);
 router.get('/api/ride', userTokenMW.loadUserToken, ride.getRides);
+router.post('/api/ride/request', userTokenMW.loadUserToken, ride.requestRide);
 router.get('/api/ride/:id', userTokenMW.loadUserToken, ride.getRide);
 router.get('/api/event/:id/ride', userTokenMW.loadUserToken, ride.getRidesForEvent);
 

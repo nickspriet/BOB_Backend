@@ -14,7 +14,7 @@ request(app)
   });
 */
 
-/*
+
 request(app)
   .get('/api/ride')
 	.query({
@@ -24,7 +24,7 @@ request(app)
     if (err) throw err;
 		console.log(res.body.data.rides);
   });
-  */
+
 
 
 /*
@@ -39,6 +39,7 @@ request(app)
   });
   */
 
+/*
 request(app)
     .get('/api/event/662005380569219/ride')
     .query({
@@ -48,3 +49,4 @@ request(app)
         if (err) throw err;
         console.log(res.body.data.rides);
     });
+*/

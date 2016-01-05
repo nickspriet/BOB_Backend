@@ -3,6 +3,7 @@
  */
 
 var RidesRepo = (function () {
+    var User = require('../models/User');
     var Ride = require('../models/Ride');
 
     var createFromEvent = function (userId, event, next) {
@@ -27,9 +28,15 @@ var RidesRepo = (function () {
         });
     };
 
-    var getAllByDriver = function (userId, next) {
-        Ride.find({driver: userId})
+    var getAllForUser = function (userId, next) {
+        Ride.find( {$or: [
+                {driver: userId},
+                {requests: userId},
+                {approved: userId}
+            ]})
             .populate('driver')
+            .populate({path: 'requests', model: User})
+            .populate({path: 'approved', model: User})
             .exec(function (err, rides) {
                 if (err) return next(err);
                 if (!rides) return next(new Error('No rides found for this user'));
@@ -41,6 +48,8 @@ var RidesRepo = (function () {
     var getAllByEvent = function (eventId, next) {
         Ride.find({event: eventId})
             .populate('driver')
+            .populate({path: 'requests', model: User})
+            .populate({path: 'approved', model: User})
             .exec(function (err, rides) {
                 if (err) return next(err);
                 if (!rides) return next(new Error('No rides found for this event'));
@@ -52,6 +61,8 @@ var RidesRepo = (function () {
     var getById = function (id, next) {
         Ride.findOne({_id: id})
             .populate('driver')
+            .populate({path: 'requests', model: User})
+            .populate({path: 'approved', model: User})
             .exec(function (err, ride) {
                 if (err) return next(err);
                 if (!ride) return next(new Error('No ride found for this id'));
@@ -59,6 +70,14 @@ var RidesRepo = (function () {
                 console.log('ride', ride);
                 next(null, ride);
             });
+    };
+
+    var addRequest = function (rideid, userid, next) {
+        Ride.findByIdAndUpdate(
+            rideid,
+            {$push: {'requests': userid}},
+            {'safe': true, 'new': true})
+            .exec(next);
     };
 
     var eventsCache = {};
@@ -91,10 +110,11 @@ var RidesRepo = (function () {
     return {
         model: Ride,
         createFromEvent: createFromEvent,
-        getAllByDriver: getAllByDriver,
+        getAllForUser: getAllForUser,
         getById: getById,
         populateWithEvent: populateWithEvent,
-        getAllByEvent: getAllByEvent
+        getAllByEvent: getAllByEvent,
+        addRequest: addRequest
     };
 })();
 
