@@ -28,7 +28,7 @@ var showError = (function () {
     return {
         response: response,
         notFound: notFound
-    }
+    };
 
 })();
 

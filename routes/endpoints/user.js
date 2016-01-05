@@ -1,8 +1,5 @@
-var _ = require('lodash');
-var Auth = require('../middleware/auth');
 var showError = require('../error');
 var UsersRepo = require('../../data/repositories/UsersRepo');
-var UserTokensRepo = require('../../data/repositories/UserTokensRepo');
 
 
 var user = (function () {
@@ -45,7 +42,7 @@ var user = (function () {
     return {
         login: login,
         profile: profile
-    }
+    };
 })();
 
 

@@ -67,7 +67,7 @@ var facebookApi = function (accessToken) {
         getProfile: getProfile,
         getEvents: getEvents,
         getByFacebookEventId: getByFacebookEventId
-    }
+    };
 };
 
 module.exports = facebookApi;

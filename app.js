@@ -4,6 +4,11 @@ var bodyParser = require('body-parser');
 
 var routes = require('./routes');
 
+var mongoose = require('mongoose');
+var config = require('./config');
+var DBService = require('./data/connectDBService');
+DBService(config.database.url, mongoose);
+
 var app = express();
 
 // Logging
