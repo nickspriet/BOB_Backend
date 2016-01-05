@@ -39,21 +39,43 @@ var RidesRepo = (function () {
     };
 
     var getById = function (id, next) {
-        Ride.findOne({_id: id}).populate('driver').exec(function (err, ride) {
-            if (err) return next(err);
-            if (!ride) return next(new Error('No ride found for this id'));
+        Ride.findOne({_id: id})
+            .populate('driver')
+            .exec(function (err, ride) {
+                if (err) return next(err);
+                if (!ride) return next(new Error('No ride found for this id'));
 
-            console.log('ride', ride);
-            next(null, ride);
+                console.log('ride', ride);
+                next(null, ride);
+            });
+    };
+
+    var populateWithEvent = function (fbAPI) {
+      return function (ride, cb) {
+        fbAPI.getByFacebookEventId(ride._doc.event, function (err, event) {
+          if (err) return cb(err);
+          if (event.error) return cb(event.error);
+
+          //TODO => delete this and handle error in android
+          event.description = event.description ? event.description : '';
+          event.cover = event.cover ? event.cover.source : '';
+          event.picture = event.picture.data.url ? event.picture.data.url : '';
+
+          //add event to model
+          ride._doc.event = event;
+
+          cb(null, ride);
         });
+      };
     };
 
     return {
         model: Ride,
         createFromEvent: createFromEvent,
         getAllByDriver: getAllByDriver,
-        getById: getById
-    }
+        getById: getById,
+        populateWithEvent: populateWithEvent
+    };
 })();
 
 module.exports = RidesRepo;

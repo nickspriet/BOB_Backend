@@ -28,7 +28,7 @@ router.get('/api/event', userTokenMW.loadUserToken, event.getEvents);
 
 router.post('/api/ride', userTokenMW.loadUserToken, ride.create);
 router.get('/api/ride', userTokenMW.loadUserToken, ride.getRides);
-//router.get('/api/ride/:id', ride.getRide);
+router.get('/api/ride/:id', userTokenMW.loadUserToken, ride.getRide);
 
 router.get('/webhook', webhook.testje);
 router.post('/webhook', webhook.addEvent);

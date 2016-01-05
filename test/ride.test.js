@@ -1,9 +1,9 @@
 var request = require('supertest');
-var app = require('../index.js');
+var app = require('../app.js');
 
 /*
 request(app)
-  .post('/ride')
+  .post('/api/ride')
 	.send({
 		token: '564c364f3b96585f1d3f781f|eyvtkLaTu8Ay-ZCYuA7kEFb',
 		eventId: '416927091838531'
@@ -16,7 +16,7 @@ request(app)
 
 /*
 request(app)
-  .get('/ride')
+  .get('/api/ride')
 	.query({
 		token: '564c364f3b96585f1d3f781f|eyvtkLaTu8Ay-ZCYuA7kEFb'
 	})
@@ -28,7 +28,7 @@ request(app)
 
 
 request(app)
-  .get('/ride/56686aeff07b3c7b78d4fc7b')
+  .get('/api/ride/568826755924550e65792401')
 	.query({
 		token: '564c364f3b96585f1d3f781f|eyvtkLaTu8Ay-ZCYuA7kEFb'
 	})
