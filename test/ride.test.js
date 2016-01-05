@@ -1,7 +1,7 @@
 var request = require('supertest');
 var app = require('../app.js');
 
-/*
+
 request(app)
   .post('/api/ride')
 	.send({
@@ -12,7 +12,7 @@ request(app)
     if (err) throw err;
 		console.log(res.body);
   });
-*/
+
 
 /*
 request(app)
@@ -27,6 +27,7 @@ request(app)
   */
 
 
+/*
 request(app)
   .get('/api/ride/568826755924550e65792401')
 	.query({
@@ -36,3 +37,4 @@ request(app)
     if (err) throw err;
 		console.log(res.body);
   });
+  */

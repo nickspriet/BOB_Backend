@@ -7,13 +7,13 @@ var RidesRepo = (function () {
 
     var createFromEvent = function (userId, event, next) {
         //check if ride already exists
-        Ride.findOne({eventId: event.id}, function (err, existingRide) {
+        Ride.findOne({event: event.id}, function (err, existingRide) {
             if (err) next(err);
             if (existingRide) return next(null, existingRide);
 
             //ride doesn't exist, create a new ride
             var ride = new Ride({
-                eventId: event.id,
+                event: event.id,
                 driver: userId,
                 approved: [],
                 requests: [],

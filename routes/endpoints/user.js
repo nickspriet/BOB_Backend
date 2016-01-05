@@ -39,9 +39,24 @@ var user = (function () {
         });
     };
 
+    var save = function (req, res) {
+        UsersRepo.saveUser(req.userToken.userId, req.body, function(err, user) {
+            if (err) return showError.response(res)(err, 'Failed to save user');
+
+            res.send({
+                statusCode: 200,
+                message: 'OK',
+                data: {
+                    user: user
+                }
+            });
+        });
+    };
+
     return {
         login: login,
-        profile: profile
+        profile: profile,
+        save: save
     };
 })();
 
