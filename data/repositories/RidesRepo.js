@@ -18,7 +18,7 @@ var RidesRepo = (function () {
                 driver: userId,
                 approved: [],
                 requests: [],
-                description: '',
+                description: event.description || '',
                 startTime: event.start_time,
                 endTime: event.end_time,
                 place: event.place
