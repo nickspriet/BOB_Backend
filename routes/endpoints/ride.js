@@ -16,13 +16,8 @@ var ride = (function () {
             RidesRepo.createFromEvent(req.userToken.userId, event, function (err, ride) {
                 if (err) return showError.response(res)(err, 'Failed to create ride from event');
 
-                return res.send({
-                    statusCode: 200,
-                    message: 'OK',
-                    data: {
-                        ride: ride
-                    }
-                });
+                req.params.id = ride._id;
+                getRide(req, res);
             });
         });
     };

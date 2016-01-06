@@ -67,7 +67,6 @@ var RidesRepo = (function () {
                 if (err) return next(err);
                 if (!ride) return next(new Error('No ride found for this id'));
 
-                console.log('ride', ride);
                 next(null, ride);
             });
     };
