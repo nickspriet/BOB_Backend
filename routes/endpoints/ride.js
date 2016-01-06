@@ -100,19 +100,8 @@ var ride = (function () {
         RidesRepo.addRequest(req.body.rideid, req.userToken.userId, function (err, ride) {
             if (err) return showError.response(res)(err, 'Failed to add request');
 
-            var fbAPI = facebookApi(req.userToken.facebookToken);
-            RidesRepo.populateWithEvent(fbAPI)(ride, function(err, ride) {
-                if (err) return showError.response(res)(err, err.message);
-                if (!ride) return showError.response(res)(err, 'No event found for this ride');
-
-                res.send({
-                  statusCode: 200,
-                  message: 'OK',
-                  data: {
-                    ride: ride
-                  }
-                });
-            });
+            req.params.id = ride._id;
+            getRide(req, res);
         });
     };
 
