@@ -1,10 +1,12 @@
 #!/usr/bin/env node
+'use strict';
 
 /**
  * Module dependencies.
  */
 var app = require('../app');
 var http = require('http');
+var chatServer = require('../socket/chatServer');
 
 /**
  * Get port from environment and store in Express.
@@ -16,6 +18,7 @@ app.set('port', port);
  * Create HTTP server.
  */
 var server = http.createServer(app);
+chatServer(server);
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -30,8 +33,12 @@ server.on('listening', onListening);
 function normalizePort(val) {
     var port = parseInt(val, 10);
 
-    if (isNaN(port)) return val; // named pipe
-    if (port >= 0) return port; // port number
+    if (isNaN(port)) {
+        return val; // named pipe
+    }
+    if (port >= 0) {
+        return port; // port number
+    }
 
     return false;
 }

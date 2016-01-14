@@ -1,3 +1,7 @@
+/**
+ * models/User.js
+ */
+
 var mongoose = require('mongoose');
 var UserSchema = require('../schemas/UserSchema');
 

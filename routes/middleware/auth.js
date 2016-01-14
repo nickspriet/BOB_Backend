@@ -1,6 +1,8 @@
 /**
- * Created by Nick on 01/02/16.
+ * routes/middleware/auth.js:
+ * Authenticate the user (middleware)
  */
+'use strict';
 var facebookApi = require('../api/facebookApi');
 var User = require('../../data/models/User');
 var UsersRepo = require('../../data/repositories/UsersRepo');
@@ -8,7 +10,6 @@ var UserTokensRepo = require('../../data/repositories/UserTokensRepo');
 var showError = require('../error');
 var _ = require('lodash');
 var crypto = require('crypto');
-
 
 function getParams(req) {
     return _.mapKeys(_.merge(req.query, req.body, req.params),
@@ -30,7 +31,9 @@ var Auth = (function () {
         var params = req.params = getParams(req);
 
         UsersRepo.getByFacebookUserId(params.FACEBOOK_USERID, function (err, profile) {
-            if (err) return showError.response(res)(err, err.message);
+            if (err) {
+                return showError.response(res)(err, err.message);
+            }
 
             if (profile) {
                 // There is already a profile, return this
@@ -41,8 +44,10 @@ var Auth = (function () {
             else {
                 // No user, so make one
                 console.info('Creating new user');
-                facebookApi(params.FACEBOOK_TOKEN).getProfile(function(err, profile){
-                    if (err) return showError.response(res)(err, err.message);
+                facebookApi(params.FACEBOOK_TOKEN).getProfile(function (err, profile) {
+                    if (err) {
+                        return showError.response(res)(err, err.message);
+                    }
 
                     console.info('New profile', profile.name);
 
@@ -61,7 +66,7 @@ var Auth = (function () {
      * @param {String} facebookExpirationString Expiration date as a String
      * @param {String} deviceType The device type "android" for now
      * @param {String} deviceModel The identifier of the device
-     * @param {Function} cb Callback(Error err, String token)
+     * @param {Function} cb Callback(Error err, String userToken)
      */
     var createToken = function (req, res, next) {
         UserTokensRepo.renew(req.user, req.params.FACEBOOK_TOKEN, req.params.FACEBOOK_EXPIRES, req.params.DEVICE_TYPE, req.params.DEVICE_MODEL, function (err, userToken) {
@@ -72,7 +77,9 @@ var Auth = (function () {
                 // embed the userId in the token, and shorten it
                 userToken.token = userToken.userId + '|' + token.toString().slice(1, 24);
                 userToken.save(function (err) {
-                    if (err) return next(err);
+                    if (err) {
+                        return next(err);
+                    }
 
                     req.userToken = userToken.token;
                     next();
@@ -84,16 +91,7 @@ var Auth = (function () {
     return {
         findOrCreateUser: findOrCreateUser,
         createToken: createToken
-    }
-})();
+    };
+}());
 
 module.exports = Auth;
-
-/**
- * Create a new user. Gets a profile from Facebook using the facebookToken.
- * @param {String} facebookToken The accessToken from Facebook
- * @param {Function} cb Callback(Error err, User user)
- */
-function createUser(facebookToken, cb) {
-
-}

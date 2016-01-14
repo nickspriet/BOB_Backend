@@ -1,3 +1,7 @@
+/**
+ * models/UserToken.js
+ */
+
 var mongoose = require('mongoose');
 var UserTokenSchema = require('../schemas/UserTokenSchema');
 

@@ -27,7 +27,6 @@ exports.addEvent = function (req, res) {
         switch (item) {
             case 'events':
             //update events for user with userId
-
         }
 
         // tell async that the iterator has completed

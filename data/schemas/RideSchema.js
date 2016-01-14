@@ -1,5 +1,5 @@
 /**
- * Created by Nick on 12/29/2015.
+ * schemas/RideSchema.js
  */
 var mongoose = require('mongoose');
 

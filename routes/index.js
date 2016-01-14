@@ -33,8 +33,8 @@ router.post('/api/ride/request', userTokenMW.loadUserToken, ride.requestRide);
 router.get('/api/ride/:id', userTokenMW.loadUserToken, ride.getRide);
 router.get('/api/event/:id/ride', userTokenMW.loadUserToken, ride.getRidesForEvent);
 
-router.get('/webhook', webhook.testje);
-router.post('/webhook', webhook.addEvent);
+//router.get('/webhook', webhook.testje);
+//router.post('/webhook', webhook.addEvent);
 
 
 router.all('/api/*', showError.notFound);

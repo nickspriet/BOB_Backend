@@ -1,3 +1,7 @@
+/**
+ * models/Ride.js
+ */
+
 var mongoose = require('mongoose');
 var RideSchema = require('../schemas/RideSchema');
 

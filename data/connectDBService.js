@@ -1,5 +1,6 @@
 /**
- * Created by Nick on 12/28/2015.
+ * data/connectDBService.js:
+ * Service for database connection (mongodb)
  */
 
 var connectDBService = (function (configURL, database) {
@@ -11,7 +12,9 @@ var connectDBService = (function (configURL, database) {
         message += '\n\twith known collection/models: ';
 
         var collections = database.connection.collections;
-        for (var property in collections) message += collections[property].name + ', ';
+        for (var property in collections) {
+            message += collections[property].name + ', ';
+        }
 
         console.log(message.slice(0, -2)); //remove last 2 chars ', '
     });

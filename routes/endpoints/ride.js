@@ -1,3 +1,7 @@
+/**
+ * routes/endpoints/ride.js:
+ *
+ */
 var showError = require('../error');
 var RidesRepo = require('../../data/repositories/RidesRepo');
 var async = require('async');
@@ -7,7 +11,6 @@ var ride = (function () {
     /**
      * Create a new Ride from an Event and User id
      * @param {String} eventId The id for the event
-     * @param {String} token Our token
      */
     var create = function (req, res) {
         facebookApi(req.userToken.facebookToken).getByFacebookEventId(req.body.eventId, function (err, event) {
@@ -32,34 +35,39 @@ var ride = (function () {
             if (err) return showError.response(res)(err, err.message);
 
             var fbAPI = facebookApi(req.userToken.facebookToken);
-            async.map(rides, RidesRepo.populateWithEvent(fbAPI), function(err, rides) {
+            async.map(rides, RidesRepo.populateWithEvent(fbAPI), function (err, rides) {
                 if (err) return showError.response(res)(err, err.message);
                 if (!rides) return showError.response(res)(err, 'No rides found for this event');
                 res.send({
-                  statusCode: 200,
-                  message: 'OK',
-                  data: {
-                    rides: rides
-                  }
+                    statusCode: 200,
+                    message: 'OK',
+                    data: {
+                        rides: rides
+                    }
                 });
             });
         });
     };
 
+
+    /**
+     * Get the rides for the associated event
+     * @param {String} id The facebook event id
+     */
     var getRidesForEvent = function (req, res) {
         RidesRepo.getAllByEvent(req.params.id, function (err, rides) {
             if (err) return showError.response(res)(err, err.message);
 
             var fbAPI = facebookApi(req.userToken.facebookToken);
-            async.map(rides, RidesRepo.populateWithEvent(fbAPI), function(err, rides) {
+            async.map(rides, RidesRepo.populateWithEvent(fbAPI), function (err, rides) {
                 if (err) return showError.response(res)(err, err.message);
                 if (!rides) return showError.response(res)(err, 'No rides found for this event');
                 res.send({
-                  statusCode: 200,
-                  message: 'OK',
-                  data: {
-                    rides: rides
-                  }
+                    statusCode: 200,
+                    message: 'OK',
+                    data: {
+                        rides: rides
+                    }
                 });
             });
         });
@@ -76,16 +84,16 @@ var ride = (function () {
             if (err) return showError.response(res)(err, 'Failed to get ride');
 
             var fbAPI = facebookApi(req.userToken.facebookToken);
-            RidesRepo.populateWithEvent(fbAPI)(ride, function(err, ride) {
+            RidesRepo.populateWithEvent(fbAPI)(ride, function (err, ride) {
                 if (err) return showError.response(res)(err, err.message);
                 if (!ride) return showError.response(res)(err, 'No event found for this ride');
 
                 res.send({
-                  statusCode: 200,
-                  message: 'OK',
-                  data: {
-                    ride: ride
-                  }
+                    statusCode: 200,
+                    message: 'OK',
+                    data: {
+                        ride: ride
+                    }
                 });
             });
         });

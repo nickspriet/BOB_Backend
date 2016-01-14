@@ -1,5 +1,5 @@
 /**
- * Created by Nick on 12/27/2015.
+ * schemas/UserSchema.js
  */
 var mongoose = require('mongoose');
 var _ = require('lodash');
