@@ -18,6 +18,7 @@ var showError = (function () {
 
     //Returns a 404 error message
     var notFound = function (req, res) {
+        console.error('Not found');
         res.status(404);
         res.send({
             statusCode: 404,

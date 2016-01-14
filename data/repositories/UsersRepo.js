@@ -23,12 +23,21 @@ var UsersRepo = (function () {
         });
     };
 
+    var saveUser = function (userId, newUser, next) {
+        User.findByIdAndUpdate(
+            userId,
+            {$set: newUser},
+            {'new': true},
+            next);
+    };
+
 
     return {
         model: User,
         getByFacebookUserId: getByFacebookUserId,
-        getById: getById
-    }
+        getById: getById,
+        saveUser: saveUser
+    };
 })();
 
 module.exports = UsersRepo;

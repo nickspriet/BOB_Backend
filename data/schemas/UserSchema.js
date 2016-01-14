@@ -22,7 +22,11 @@ var UserSchema = new mongoose.Schema({
     location: {
         id: String,
         name: String
-    }
+    },
+    aboutMe: String,
+    mobile: String,
+    carModel: String,
+    carNo: String
 });
 
 UserSchema.statics.createFromFacebook = function (profile) {
@@ -41,14 +45,18 @@ UserSchema.statics.createFromFacebook = function (profile) {
         timezone: profile.timezone,
         verified: profile.verified,
         cover: profile.cover.source,
-        location: profile.location
+        location: profile.location,
+        mobile: '',
+        carModel: '',
+        carNo: ''
     });
 };
 
 // Only send required fields
 UserSchema.set('toJSON', {
     transform: function (doc, ret) {
-        return _.pick(ret, '_id', 'facebookID', 'name', 'firstName', 'lastName', 'picture', 'cover', 'link');
+        return _.pick(ret, '_id', 'facebookID', 'name', 'firstName', 'lastName',
+        'picture', 'cover', 'link', 'mobile', 'carModel', 'carNo', 'aboutMe');
     }
 });
 

@@ -16,13 +16,8 @@ var ride = (function () {
             RidesRepo.createFromEvent(req.userToken.userId, event, function (err, ride) {
                 if (err) return showError.response(res)(err, 'Failed to create ride from event');
 
-                return res.send({
-                    statusCode: 200,
-                    message: 'OK',
-                    data: {
-                        ride: ride
-                    }
-                });
+                req.params.id = ride._id;
+                getRide(req, res);
             });
         });
     };
@@ -33,7 +28,26 @@ var ride = (function () {
      * @param {String} token AccessToken
      */
     var getRides = function (req, res) {
-        RidesRepo.getAllByDriver(req.userToken.userId, function (err, rides) {
+        RidesRepo.getAllForUser(req.userToken.userId, function (err, rides) {
+            if (err) return showError.response(res)(err, err.message);
+
+            var fbAPI = facebookApi(req.userToken.facebookToken);
+            async.map(rides, RidesRepo.populateWithEvent(fbAPI), function(err, rides) {
+                if (err) return showError.response(res)(err, err.message);
+                if (!rides) return showError.response(res)(err, 'No rides found for this event');
+                res.send({
+                  statusCode: 200,
+                  message: 'OK',
+                  data: {
+                    rides: rides
+                  }
+                });
+            });
+        });
+    };
+
+    var getRidesForEvent = function (req, res) {
+        RidesRepo.getAllByEvent(req.params.id, function (err, rides) {
             if (err) return showError.response(res)(err, err.message);
 
             var fbAPI = facebookApi(req.userToken.facebookToken);
@@ -77,10 +91,26 @@ var ride = (function () {
         });
     };
 
+    /**
+     * Add a request to a ride for the current user
+     * @param {String} rideid ID of the ride
+     * @param {String} token AccessToken
+     */
+    var requestRide = function (req, res) {
+        RidesRepo.addRequest(req.body.rideid, req.userToken.userId, function (err, ride) {
+            if (err) return showError.response(res)(err, 'Failed to add request');
+
+            req.params.id = ride._id;
+            getRide(req, res);
+        });
+    };
+
     return {
         create: create,
         getRide: getRide,
-        getRides: getRides
+        getRides: getRides,
+        getRidesForEvent: getRidesForEvent,
+        requestRide: requestRide
     };
 })();
 

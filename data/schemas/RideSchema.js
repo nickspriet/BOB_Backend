@@ -4,7 +4,7 @@
 var mongoose = require('mongoose');
 
 var RideSchema = new mongoose.Schema({
-    eventId: {type: mongoose.Schema.Types.Mixed},
+    event: {type: mongoose.Schema.Types.Mixed},
     driver: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
     approved: {type: [mongoose.Schema.Types.ObjectId], ref: 'User'},
     requests: {type: [mongoose.Schema.Types.ObjectId], ref: 'User'},
